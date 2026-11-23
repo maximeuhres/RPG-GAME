@@ -1,0 +1,84 @@
+------------------------------------idée rpg-------------------------------------
+
+-interfaces de classes
+
+-interfaces de stats (système stats(avancé),interfaces)
+	-> système stats défini, faut l'implémenter et le faire fonctionner
+	-> interfaces pas du tout commencé
+
+-inventaire (système (avancé), interface(avancé))
+	-> une base fonctionelle mais pas ajusté aux éléments du jeu
+	-> faire un système pour équiper, vendre, drop
+
+-interfaces des quetes
+	-> créer des villageois?
+	-> créer une interface
+	-> créer un système fonctionel
+
+-interfaces argent(système argent, idée de monnaie?, interface)
+	-> système argent pas du tout commencé
+	-> nom monnaie? 
+	-> interfaces/graphismes pas du tout commencé
+
+-crée le système de drop de stuff (avancé)
+	-> il faut l'ajuster pour tout le stuff
+	-> faire drop le stuff par des chest/mobs/quetes
+
+-crée le système de personnage animé qui bouge (avancé, manque un demi tour pour etre cohérent (juste créer la meme palette d'animation mais pour dans l'autre sens et faire accorder si gauche dernier direction alors accordé bas/haut idem autre sens))
+
+-système de déplacement check (crash si on va trop proche du bord de la fenètre)
+
+-ajouter un system d'interaction avec le monde (avec une touche ou avec le curseur souris, préférable avec des touches clavier) (en soit ça avance avec les autres mécas)
+
+-création d'une attaque à l'épée (graphisme, et fonctionel)
+	-> graphisme pour l'épée basique (manque les autres armes
+	-> fonctionel, manque le principe de dégats et l'attribution des stats
+
+-menu échap (créer le système de save&quit + système option)
+	-> save & quit donc faire que ça mette le running game to false, et pour la sauvegarde il faudra que ça écrive dans un fichier les stats de la partie pour que ça soit utilisée à la prochaine game
+	-> menu option avec rebind des touches etc
+	-> graphismes à faire en beau (c'est simple pour l'instant, idée de faire en parchemin)
+
+-créer un système de commande triches pour pouvoir effectuer des tests de gameplay de manière plus pro sans avoir à devoir bind des touches pour chaque évents
+
+-optimiser le jeu par le retrait des time.sleep(), remplacé par un délai comme pour les consomables
+
+-utilisation d'un consommable
+	-> cooldown fait
+	-> création d'un temps pour le jeu au global fait
+
+-création de chest pour drop du stuff/argent
+	-> texture
+	-> créer le système de drop(relier au système de drop actuel)
+
+-création de crate
+	-> début de texture
+	-> il faut donner un interet
+	-> dev le système
+
+-créer la barre de vie, mana, hotbar à la vesteria?
+	-> barre de vie avancée, bug dans l'affichage
+
+-créer un système de combat, en temps réel
+	-> système de focus sur un ennemi
+	-> affichage point de vie de l'ennemi
+
+-créer un ennemi
+	-> il faut un ennemi corps à corps, dégâts quand on est proche, bouge tout seul (pourquoi pas quand il repère le joueur) 
+	-> idées d'ennemi: troll, gobelin, un bandit, squelettes, slime, chauves-souris
+	-> faire la texture
+	-> comportement
+		-> mouvement naturel et mouvement vers le joueur
+		-> capacité d'attaquer
+		-> capacité de détecter le joueur au bout d'un moment s'il est trop prêt
+			-> système de hide pour éviter les ennemis
+
+-pour la première basse du jeu jouable/didacticiels il y aura un donjon, le joueur spawn dans le donjon, récupère un loot tout basique dans une première chambre, puis affronte un ennemi dans la chambre suivante (ennemi corps à corps), puis une deuxième chambre avec 2ennemis (un corps à corps et un archer), une prochaine chambre avec un piège, une prochaine avec une énigme, et enfin une dernière avec un loot et le choix de la classe (le loot s'accorde avec la classe choisie), puis sortit dehors pour explorer le monde
+
+
+
+-idée fun faire un paramètre qui dit "peur de l'herbe" si activé on retire toute les textures d'herbe
+
+-idée fun de succes: "avoir un niveau d'intelligence d'au moins 230 et rater une épreuve énigme", nom du succes: "an iq too hight?"
+
+
