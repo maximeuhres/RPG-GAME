@@ -281,18 +281,18 @@ def spawn_entity(monster_type, slime_type, slime_type_image):
     answer=str(input("voulez vous faire spawn le mob au hasard?\n")).strip().upper()
     entity_drop_number=random.randint(0,len(slime_type)-1)
     entity_drop=slime_type[entity_drop_number]
-    if answer == 'YES':
-        entity_spawn_zone_on_screen1=random.randint(300,(500))
+    if answer in ['YES','OUI']:
+        entity_spawn_zone_on_screen1=random.randint(300,500)
         entity_spawn_zone_on_screen2=random.randint(200,400)
-    elif answer == 'NO':
+    elif answer in ['NO','NON']:
         entity_spawn_zone_on_screen1=int(input("saisissez la coordonnée x:\n"))
         entity_spawn_zone_on_screen2=int(input("saisissez la coordonnée y:\n"))
     else:
         return
-    screen.blit(slime_type_image[entity_drop_number],(entity_spawn_zone_on_screen1,entity_spawn_zone_on_screen2))
     monster_number_on_screen+=1
     monster_position_on_screen.append((entity_spawn_zone_on_screen1,entity_spawn_zone_on_screen2))
     monster_type_on_screen.append(slime_type[entity_drop_number])
+    screen.blit(slime_type_image[entity_drop_number],(entity_spawn_zone_on_screen1,entity_spawn_zone_on_screen2))
     pygame.display.flip()
 
 def get_weapon_stats(weapon):
@@ -397,32 +397,50 @@ def hp_value (pv_impact_value):
         screen.blit(red_square, (a,103))
     pygame.display.flip()
 
-def enemy_movements_to_player(actual_monster):
-    #check la direction du joueur, faire avancer le monstre dans cette direction, re-set la position du monstre dans la liste pour ne pas la perdre
-    actual_monster_near_player=False
-
 #function for moving enemy
 entity_moov_timer=5
+def enemy_movements_to_player(actual_monster, monster_speed, player_pos_x, player_pox_y, monster_pos):
+    if player_pos_x <= monster_pos[0]:
+        monster_new_position_x=monster_pos[0]-(5*monster_speed)
+    elif player_pos_x >= monster_pos[0]:
+        monster_new_position_x=monster_pos[0]+(5*monster_speed)
+    if player_pos_y <= monster_pos[1]:
+        monster_new_position_y=monster_pos[1]-(5*monster_speed)
+    elif player_pos_y >= monster_pos[1]:
+        monster_new_position_y=monster_pos[1]+(5*monster_speed)
+    monster_new_position=(monster_new_position_x,monster_new_position_y)
+    return monster_new_position
+
 def enemy_movements_random():
-    global monster_type, slime_type, bat_type, skeleton_type, monster_number_on_screen, monster_position_on_screen, monster_type_on_screen
+    actual_monster_near_player = False
+    global monster_type, slime_type, bat_type, skeleton_type, monster_number_on_screen, monster_position_on_screen, monster_type_on_screen, player_pos_x, player_pos_y
     for i in range (monster_number_on_screen):
         actual_monster=monster_type_on_screen[i]
-        #test si la position du monstre est suffisement proche du joueur, ou si joueur détecté et faire test une fonction qui détecte le joueur à chaque mouvements
-        if actual_monster_near_player == True:
-            enemy_movements_to_player(actual_monster)
-            pass
         actual_monster_position=monster_position_on_screen[i-1]
+        distance_x=abs(actual_monster_position[0]-player_pos_x)
+        distance_y=abs(actual_monster_position[1]-player_pos_y)
         monster_image_surface=slime_type_image[i].get_size()
         monster_background_save = grass_original.subsurface(((actual_monster_position), (monster_image_surface))).copy()
-        movement_x=random.randint(-10,10)*slime_stats[slime_type.index(actual_monster)][1]
-        movement_y=random.randint(-10,10)*slime_stats[slime_type.index(actual_monster)][1]
-        monster_new_position=actual_monster_position[0]+movement_x,actual_monster_position[1]+movement_y
+        if distance_x <= 200:
+            if distance_y <= 200:
+                actual_monster_near_player = True
+            else:
+                pass
+        else:
+            pass
+        if actual_monster_near_player == True:
+            monster_new_position=enemy_movements_to_player(actual_monster, slime_stats[slime_type.index(actual_monster)][1], player_pos_x, player_pos_y, monster_position_on_screen[i-1])
+        else:
+            movement_x=random.randint(-10,10)*slime_stats[slime_type.index(actual_monster)][1]
+            movement_y=random.randint(-10,10)*slime_stats[slime_type.index(actual_monster)][1]
+            monster_new_position=actual_monster_position[0]+movement_x,actual_monster_position[1]+movement_y
+        actual_monster_near_player = False
         monster_position_on_screen[i-1]=(monster_new_position)
         screen.blit(monster_background_save,(monster_new_position))
         screen.blit(slime_type_image[i],(monster_new_position))
         pygame.display.flip()
 
-#function for closing interface
+#functions for closing interface
 def resume_fonction ():
     global disable_player_movement, pause_menu_temp_variable_1
     screen.blit(pause_menu_background_save, (0, 0))
@@ -438,7 +456,7 @@ def resume_inventory_fonction ():
 
 ancient_time=round(time.perf_counter())
 while running:
-    #where we get the actual time of the game
+    #here we get the actual time of the game
     actual_time=round(time.perf_counter())
     #function for a clock, print the actual time every second
     '''if actual_time>=ancient_time:
@@ -527,6 +545,7 @@ while running:
             if speed_potion_used ==False:
                 if speed_potion_stock>=1:
                     speed_potion_stock-=1
+                    inventory_consumable_item.remove("speed_potion")
                     speed_bonus+=5
                     calc_character_spd()
                     cooldown_speed_potion=actual_time+10
